@@ -3,18 +3,20 @@
 #include <sstream>
 #include "ClassPool.hpp"
 #include "Classifier.hpp"
+#include "MomentClassifier.hpp"
 
 using namespace std;
 
 int main(int argc, char **argv){
   /* pool 0 is the training set, pools 1, 2, and 3 are the testing
      sets. */
-  vector<ClassPool> pools(4, ClassPool());
+  vector<ClassPool> pools(5, ClassPool());
+  
   
   /* Each character is a different class. */
   string classes="acemnoruvx";
   /* Each character is a different pool. */
-  string poolsID="ABCD";
+  string poolsID="AABCD";
 
   /* Filepath to char files */
   string path_prefix="C-I/";
@@ -31,14 +33,29 @@ int main(int argc, char **argv){
 
   /* Create classifier with train and test class pools */
 
-  Classifier c(pools[0]);
+  MomentClassifier c(pools[0], 20);
   c.addTestClassPool(pools[1]);
   c.addTestClassPool(pools[2]);
   c.addTestClassPool(pools[3]);
+  c.addTestClassPool(pools[4]);
+  
+  /*vector<CImage *> tmp= c.cp_train.m["x"];
+  for(int i = 0; i < tmp.size(); i++){
+    tmp[i]->print();
+    cout<<endl;
+    }*/
   
   c.makeFeatureVector();
+  c.applyRMSTransform();
+  c.calculateClassAverages();
   c.runClassifierOnTestPools();
+  c.printConfusionTable(c.confusion_tables[0]);
+  cout<<endl;
   c.printConfusionTable(c.confusion_tables[1]);
+  cout<<endl;
+  c.printConfusionTable(c.confusion_tables[2]);
+  cout<<endl;
+  c.printConfusionTable(c.confusion_tables[3]);
   
   return 0;
 }

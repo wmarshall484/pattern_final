@@ -9,8 +9,14 @@ CReader: CImage CReader.hpp
 ClassPool: CReader CImage ClassPool.hpp
 	g++ -o ClassPool.o ClassPool.hpp -c
 
-main: CReader CImage ClassPool main.cpp
-	g++ -o main main.cpp
+Classifier: ClassPool Classifier.hpp
+	g++ -o Classifier.o Classifier.hpp -c
+
+MomentClassifier: Classifier MomentClassifier.hpp
+	g++ -o MomentClassifier.o MomentClassifier.hpp -c
+
+main: Classifier MomentClassifier CReader CImage ClassPool main.cpp
+	g++ -o main main.cpp -ggdb
 
 clean:
 	rm -rf *.o *~ *# main

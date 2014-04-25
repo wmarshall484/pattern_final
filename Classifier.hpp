@@ -48,22 +48,25 @@ public:
 	}
       }
       }*/
+    int count=0;
     for(vector<ClassPool>::iterator i=cp_test.begin(); i!=cp_test.end();i++){
       vector<vector<int> > ct=getEmptyConfusionTable();
+      int actual_class=0;
       for(vector<string>::iterator j = i->ids.begin(); j !=i->ids.end(); j++){
 	for(vector<CImage *>::iterator k = (*i).m[*j].begin(); k != (*i).m[*j].end(); k++){
-	  string output_class=classify(extractFeatures(*k));
-	  int actual_class=i->idToIndex[*j];
-	  int classified_as=i->idToIndex[output_class];
-	  ct[actual_class][classified_as]+=1;
+	  int output_class=classify(extractFeatures(*k));
+	  //cout<<"("<<output_class<<", "<<*j<<") "<<flush;
+	  int classified_as=output_class;
+	  ct[actual_class][classified_as]+=1;	  
 	}
+	actual_class++;
       }
       confusion_tables.push_back(ct);
     }
   }
 
-  virtual string classify(vector<double> features){
-    return cp_train.ids[rand()%cp_train.ids.size()];
+  virtual int classify(vector<double> features){
+    return rand()%cp_train.ids.size();
   }
 
   /* Populate the feature vector in order of ClassPool ids. Ergo if
@@ -139,10 +142,13 @@ public:
       cout<<setw(10)<<i;
     cout<<setw(10)<<"type 1";
     cout<<endl;
+    int diag=0;
     for(int i = 0; i < cp_train.ids.size(); i++){
       cout<<i;
       for(int j = 0; j < cp_train.ids.size();j++){
         cout<<setw(10)<<ca[i][j];
+	if(i==j)
+	  diag+=ca[i][j];
       }
       cout<<setw(10)<<et1[i]<<endl;
     }
@@ -152,7 +158,7 @@ public:
       cout<<setw(10)<<et2[i];
       sum+=et2[i];
     }
-    cout<<setw(10)<<sum<<" "<<(double)sum/(cp_train.ids.size()*cp_train.ids.size())<<endl;  
+    cout<<setw(10)<<sum<<" "<<(double)sum/(double(sum+diag))<<endl;  
   }
 
 
