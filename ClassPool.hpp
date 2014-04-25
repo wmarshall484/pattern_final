@@ -1,6 +1,7 @@
 #ifndef __CPOOL
 #define __CPOOL
 
+#include <iostream>
 #include <map>
 #include <vector>
 #include <string>
@@ -36,6 +37,14 @@ public:
     }
     ids.push_back(id);
     m[id]=temp;
+  }
+
+  /* Prints each ID in the ids vector */
+  void printIds(){
+    for(int i = 0; i < ids.size(); i++){
+      cout<<"\'"<<ids[i]<<"\" ";
+    }
+    cout<<endl;
   }
 
 };
