@@ -84,7 +84,8 @@ public:
     }
     /* Need to apply rms to each incoming vector */
     for(int i = 0; i < rms_averages.size();i++){
-      features[i]/=rms_averages[i];
+      if(rms_average!=0)
+	features[i]/=rms_averages[i];
     }
     int max_i=0;
     double max_d=getMahalanobisDistance(features, class_averages[0]);
@@ -107,7 +108,7 @@ public:
   }
 
   void calculateCovMat(){
-    covmat=randu<mat>(moments.size(), moments.size());
+    covmat=randu<mat>(feature_pool[0][0].size(),feature_pool[0][0].size());
     covmat.zeros();
     int count=0;
     for(int i = 0; i < feature_pool.size(); i++){
@@ -127,7 +128,7 @@ public:
     /* Need a count variable since there might not be the same number
        of instances in each class */
     int count=0;
-    vector<double> averages(moments.size(), 0.0);
+    vector<double> averages(feature_pool[0][0].size(), 0.0);
     for(int i = 0; i < feature_pool.size();i++){
       for(int j = 0; j < feature_pool[i].size();j++){
 	for(int k = 0; k < feature_pool[i][j].size();k++){
@@ -144,7 +145,8 @@ public:
     for(int i = 0; i < feature_pool.size();i++){
       for(int j = 0; j < feature_pool[i].size();j++){
 	for(int k = 0; k < feature_pool[i][j].size();k++){
-	  feature_pool[i][j][k]/=averages[k];
+	  if(averages[k]!=0)
+	    feature_pool[i][j][k]/=averages[k];
 	}
       }
     }
@@ -157,9 +159,9 @@ public:
   void calculateClassAverages(){
     for(int i =0; i < feature_pool.size();i++){
       int count=0;
-      vector<double> averages(moments.size(), 0.0);
+      vector<double> averages(feature_pool[0][0].size(), 0.0);
       for(int j =0; j < feature_pool[i].size();j++){
-	for(int k =0; k < moments.size();k++){
+	for(int k =0; k < feature_pool[0][0].size();k++){
 	  averages[k]+=feature_pool[i][j][k];
 	}
 	count++;
