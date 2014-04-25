@@ -26,9 +26,11 @@ int main(int argc, char **argv){
       ss<<path_prefix<<poolsID[i]<<"-"<<classes[j]<<".txt";
       pools[i].addClass(ss.str(), classes.substr(j,1), classes[j]);
     }
+    pools[i].centerAll();
   }
 
-  /* Creat classifier with train and test class pools */
+  /* Create classifier with train and test class pools */
+
   Classifier c(pools[0]);
   c.addTestClassPool(pools[1]);
   c.addTestClassPool(pools[2]);

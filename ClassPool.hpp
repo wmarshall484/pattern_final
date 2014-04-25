@@ -44,6 +44,14 @@ public:
     m[id]=temp;
   }
 
+  void centerAll(){
+    for(map<string, vector<CImage *> >::iterator i = m.begin(); i!=m.end();i++){
+      for(vector<CImage *>::iterator j = i->second.begin(); j != i->second.end(); j++){
+	(*j)->center();
+      }
+    }
+  }
+
   /* Prints each ID in the ids vector */
   void printIds(){
     for(int i = 0; i < ids.size(); i++){
