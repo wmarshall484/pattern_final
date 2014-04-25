@@ -145,7 +145,7 @@ public:
     }
     cout<<"type 2"<<setw(5)<<et2[0];
     int sum=0;
-    for(int i = 0; i < cp_train.ids.size(); i++){
+    for(int i = 1; i < cp_train.ids.size(); i++){
       cout<<setw(10)<<et2[i];
       sum+=et2[i];
     }

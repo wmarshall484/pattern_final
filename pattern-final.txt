@@ -1,3 +1,15 @@
+CSE326 -- Final Project Report
+
+For the experimenal final project, I implemented the following classifiers:
+
+1. Moment-space minimum-distance classifier
+2. Moment-space classifier with identical covariances
+3. 1NN in moment space
+4. 5NN in moment space
+5: SVM with polynomial kernel
+
+The summary table of the first four classifiers is as follows:
+
 SUMMARY TABLE:
 	A	B	C	D
 1	232     237     211     227
@@ -5,7 +17,15 @@ SUMMARY TABLE:
 3	0	136	130	140
 4	82	116	110	122
 
-Classifier 1, trained on dataset A:
+As one can see, the moment space classifier with averaged covariances performed the best on average. It should be noted that the error rate of the 1-NN classifier on training set A is thoroughly biased because set A was used to train the classifier, so it always has a distance of zero between it and a point of its corresponding class.
+
+The first 20 central moments were selected as features for the classification of the character image in Classifiers 1-4. Additionally, it is shown that when zoning is used, which returning the black area within 64 different regions of the image, the error rate decreases by well over a factor of two (and almost an order of magnitude for the minimum distance classifier).
+
+Lastly, by converting the features to ARFF format and importing it into WEKA, it was possible to use the libSVM package for support vector machines, resulting in an error rate as low as 1.8%.
+
+For convenience, the confusion matrices for each different classifier across datasets A, B, C, and D has been included (immediately following this sentence), and the 1,340 lines of code have been appended at the end of this document.
+
+Classifier 1, Moment-space minimum-distance classifier, trained on dataset A:
 Dataset A:
           0         1         2         3         4         5         6         7         8         9    type 1
 0        60         0         0         0         7        28         0         1         0         4        40
@@ -18,7 +38,7 @@ Dataset A:
 7         3         0         3         0         0         8         1        77         2         6        23
 8         0         0         0         0         0         0         0         0        97         3         3
 9        11         0         0         0         8         1         0         2         0        78        22
-type 2   47        47        11        31         0        29        64        10         4         2        34       232 0.232
+type 2   47        11        31         0        29        64        10         4         2        34       232 0.232
 
 Dataset B:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -32,7 +52,7 @@ Dataset B:
 7         2         1         3         0         0         4         2        79         3         6        21
 8         0         0         0         0         0         0         0         0        96         4         4
 9         5         0         0         0        13         5         0         0         0        77        23
-type 2   31        31        14        34         1        36        62        13         2         4        40       237 0.237
+type 2   31        14        34         1        36        62        13         2         4        40       237 0.237
 
 Dataset C:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -46,7 +66,7 @@ Dataset C:
 7         1         1         1         0         0         3         0        87         4         3        13
 8         0         0         1         0         0         0         0         0        95         4         5
 9         5         0         0         0        13         1         0         1         0        80        20
-type 2   29        29        10        38         0        34        48        15         2         4        31       211 0.211
+type 2   29        10        38         0        34        48        15         2         4        31       211 0.211
 
 Dataset D:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -60,12 +80,12 @@ Dataset D:
 7         2         0         3         0         0        10         2        76         2         5        24
 8         0         0         1         0         0         0         0         0        94         5         6
 9         9         0         1         0        12         2         0         1         0        75        25
-type 2   39        39        22        33         0        24        57         9         3         2        38       227 0.227
+type 2   39        22        33         0        24        57         9         3         2        38       227 0.227
 
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-Classifier 2, trained on dataset A:
+Classifier 2, Moment-space classifier with identical covariances, trained on dataset A:
 
 Dataset A:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -79,7 +99,7 @@ Dataset A:
 7         0         0         1         0         0         4         0        94         1         0         6
 8         0         0         0         0         0         0         0         0        97         3         3
 9         1         0         0         0         3         0         0         0         0        96         4
-type 2    5         5         3        15         0        10        17         0         4         1         7        62 0.062
+type 2    5         3        15         0        10        17         0         4         1         7        62 0.062
 
 Dataset B:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -93,7 +113,7 @@ Dataset B:
 7         1         0         0         0         1         6         0        92         0         0         8
 8         0         0         0         0         0         0         0         0        96         4         4
 9         1         0         0         0         6         0         0         0         0        93         7
-type 2    7         7         4         8         0        11        21         3         0         0         5        59 0.059
+type 2    7         4         8         0        11        21         3         0         0         5        59 0.059
 
 Dataset C:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -107,7 +127,7 @@ Dataset C:
 7         2         1         0         0         0         4         0        93         0         0         7
 8         0         0         0         0         0         0         0         0        94         6         6
 9         1         0         0         0         3         0         0         0         0        96         4
-type 2   10        10         2        15         0         9        17         6         3         0        11        73 0.073
+type 2   10         2        15         0         9        17         6         3         0        11        73 0.073
 
 Dataset D: 
          0         1         2         3         4         5         6         7         8         9    type 1
@@ -121,11 +141,11 @@ Dataset D:
 7         3         0         0         0         0         5         0        90         0         2        10
 8         0         0         0         0         0         0         0         0        94         6         6
 9         0         0         0         0         5         1         0         0         0        94         6
-type 2    9         9         2        10         0         6        27         4         3         0         9        70 0.07
+type 2    9         2        10         0         6        27         4         3         0         9        70 0.07
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-Classifier 3, trained on dataset A:
+Classifier 3, 1NN in moment space, trained on dataset A:
 
 Dataset A:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -139,7 +159,7 @@ Dataset A:
 7         0         0         0         0         0         0         0       100         0         0         0
 8         0         0         0         0         0         0         0         0       100         0         0
 9         0         0         0         0         0         0         0         0         0       100         0
-type 2    0         0         0         0         0         0         0         0         0         0         0         0 0
+type 2    0         0         0         0         0         0         0         0         0         0         0 0
 
 Dataset B:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -153,7 +173,7 @@ Dataset B:
 7         1         1         0         0         0         2         0        94         0         2         6
 8         0         0         0         0         0         0         0         0       100         0         0
 9         2         0         0         0         9         3         0         0         0        86        14
-type 2   27        27        15        17         1        24        27         4         1         0        20       136 0.136
+type 2   27        15        17         1        24        27         4         1         0        20       136 0.136
 
 Dataset C:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -167,7 +187,7 @@ Dataset C:
 7         0         1         1         0         0         1         0        97         0         0         3
 8         0         0         0         0         0         0         0         0       100         0         0
 9         0         0         0         0        11         3         0         1         0        85        15
-type 2   18        18        11        20         0        28        31         5         3         0        14       130 0.13
+type 2   18        11        20         0        28        31         5         3         0        14       130 0.13
 
 Dataset D:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -181,11 +201,11 @@ Dataset D:
 7         1         0         0         0         0         1         0        98         0         0         2
 8         0         0         0         0         0         0         0         0       100         0         0
 9         3         0         0         0        16         4         0         1         0        76        24
-type 2   25        25        17        17         1        37        24         1         4         0        14       140 0.14
+type 2   25        17        17         1        37        24         1         4         0        14       140 0.14
 
 ------------------------------------------------------------------------------------------------------------------------------
 
-Classifier 4, trained on dataset A:
+Classifier 4, 5NN in moment space, trained on dataset A:
 
 Dataset A:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -199,7 +219,7 @@ Dataset A:
 7         0         0         0         0         0         2         1        97         0         0         3
 8         0         0         0         0         0         0         0         0       100         0         0
 9         2         0         0         1         3         4         0         0         0        90        10
-type 2   13        13         9        12         1        11        21         3         3         0         9        82 0.082
+type 2   13         9        12         1        11        21         3         3         0         9        82 0.082
 
 Dataset B:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -213,7 +233,7 @@ Dataset B:
 7         1         1         0         0         0         4         1        90         0         3        10
 8         0         0         0         0         0         0         0         0       100         0         0
 9         3         0         0         0         6         4         0         0         0        87        13
-type 2   24        24         9        15         1        17        25         4         1         0        20       116 0.116
+type 2   24         9        15         1        17        25         4         1         0        20       116 0.116
 
 Dataset C:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -227,7 +247,7 @@ Dataset C:
 7         0         2         1         0         0         0         0        96         0         1         4
 8         0         1         0         0         0         0         0         0        99         0         1
 9         2         0         0         0        13         2         0         1         0        82        18
-type 2   21        21         8        13         0        26        20         6         3         0        13       110 0.11
+type 2   21         8        13         0        26        20         6         3         0        13       110 0.11
 
 Dataset D:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -241,11 +261,11 @@ Dataset D:
 7         1         1         0         0         0         2         1        95         0         0         5
 8         0         0         0         0         0         0         0         0       100         0         0
 9         2         0         0         0         7         4         0         1         0        86        14
-type 2   30        30        13        15         0        20        26         4         1         0        13       122 0.122
+type 2   30        13        15         0        20        26         4         1         0        13       122 0.122
 
 ----------------------------------------------------------------------------------------------------------------------------
 
-Moment space minimum distance classifier with zoning and histogram bucket values as extra features, trained on datase A:
+Moment space minimum distance classifier with zoning as extra features, trained on datase A:
 
 Dataset A:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -259,7 +279,7 @@ Dataset A:
 7         0         0         0         0         0         2         0        97         1         0         3
 8         0         0         0         0         0         0         0         0        99         1         1
 9         0         0         0         0         0         0         0         0         0       100         0
-type 2    5         5         5         7         0         4         9         1         0         1         1        33 0.033
+type 2    5         5         7         0         4         9         1         0         1         1        33 0.033
 
 Dataset B:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -273,7 +293,7 @@ Dataset B:
 7         2         0         0         0         3         2         0        91         2         0         9
 8         0         0         0         0         0         0         0         0        99         1         1
 9         1         0         0         0         0         0         0         0         0        99         1
-type 2    8         8         5         1         0         9         9         3         2         2         2        41 0.041
+type 2    8         5         1         0         9         9         3         2         2         2        41 0.041
 
 Dataset C:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -287,7 +307,7 @@ Dataset C:
 7         0         1         0         0         0         1         0        96         2         0         4
 8         0         0         0         0         0         0         0         0        97         3         3
 9         1         0         0         0         0         0         0         0         0        99         1
-type 2    5         5         7         5         0         2        11         3         0         2         4        39 0.039
+type 2    5         7         5         0         2        11         3         0         2         4        39 0.039
 
 Dataset D:
           0         1         2         3         4         5         6         7         8         9    type 1
@@ -301,4 +321,1410 @@ Dataset D:
 7         6         0         0         0         0         0         0        93         1         0         7
 8         0         0         0         0         0         0         0         0        98         2         2
 9         0         0         0         0         0         0         1         0         0        99         1
-type 2   13        13         6         3         0         4         4         4         0         1         2        37 0.037
+type 2    13         6         3         0         4         4         4         0         1         2        37 0.037
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+libSVM support vector machine classification through WEKA:
+
+Dataset A:
+          0         1         2         3         4         5         6         7         8         9    type 1
+0        99         0         0         0         1         0         0         0         0         0         1
+1         0        96         3         0         0         0         1         0         0         0         4
+2         0         6        93         0         0         0         1         0         0         0         7
+3         0         0         0        94         0         6         0         0         0         0         6
+4         2         0         0         0        94         3         1         0         0         0         6
+5         1         0         1         0         2        96         0         0         0         0         4
+6         0         0         0         0         0         0       100         0         0         0         0
+7         0         0         0         0         0         1         0        99         0         0         1
+8         0         0         0         0         0         0         0         0        99         1         1
+9         0         0         0         0         0         0         0         0         0       100         0
+type 2    3         6         4         0         3        10         3         0         0         1        27 0.0270812
+
+Dataset B:
+          0         1         2         3         4         5         6         7         8         9    type 1
+0        98         0         0         0         2         0         0         0         0         0         2
+1         0        96         3         0         0         0         1         0         0         0         4
+2         0         4        94         0         0         0         2         0         0         0         6
+3         0         0         0        96         0         4         0         0         0         0         4
+4         4         0         0         0        94         2         0         0         0         0         6
+5         0         0         1         0         3        94         0         2         0         0         6
+6         0         0         0         0         0         0       100         0         0         0         0
+7         1         0         0         0         2         0         0        96         1         0         4
+8         0         0         0         0         0         0         0         0        99         1         1
+9         0         0         0         0         0         0         0         0         0       100         0
+type 2    5         4         4         0         7         6         3         2         1         1        28 0.0281407
+
+Dataset C:
+          0         1         2         3         4         5         6         7         8         9    type 1
+0        99         0         0         0         1         0         0         0         0         0         1
+1         0        97         3         0         0         0         0         0         0         0         3
+2         0         8        90         0         0         0         2         0         0         0        10
+3         0         0         0        94         0         6         0         0         0         0         6
+4         2         0         1         0        94         3         0         0         0         0         6
+5         0         0         1         0         0        99         0         0         0         0         1
+6         0         0         0         0         0         0       100         0         0         0         0
+7         0         1         0         0         0         1         0        97         1         0         3
+8         0         0         0         0         0         0         0         0        97         3         3
+9         0         0         0         0         0         0         0         0         0       100         0
+type 2    2         9         5         0         1        10         2         0         1         3        31 0.0310621
+
+Dataset D:
+          0         1         2         3         4         5         6         7         8         9    type 1
+0       100         0         0         0         0         0         0         0         0         0         0
+1         0        99         0         0         0         0         1         0         0         0         1
+2         0         5        92         0         0         0         3         0         0         0         8
+3         0         0         0        97         0         3         0         0         0         0         3
+4         6         0         0         0        94         0         0         0         0         0         6
+5         1         0         2         0         1        96         0         0         0         0         4
+6         0         0         0         0         0         0       100         0         0         0         0
+7         4         0         0         0         0         0         0        95         1         0         5
+8         0         0         0         0         0         0         0         0        98         2         2
+9         0         0         0         0         0         0         0         0         0       100         0
+type 2   11         5         2         0         1         3         4         0         1         2        18 0.0182002
+
+
+----------------------------------------------------------------------------------------------------------------------------
+Source code starts here:
+----------------------------------------------------------------------------------------------------------------------------
+#ifndef __CIMAGE
+#define __CIMAGE
+
+#include <cmath>
+#include <iostream>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+using namespace std;
+
+/* The CImage class contains all the information taken from one
+   character entry in a character file; e.g., the width, height, and
+   baseline. The actual character itself is stored in a
+   one-dimensional character buffer. */
+
+/* The CImage also has functions for obtaining features from the
+   buffer.
+ */
+class CImage {
+public:
+  char character;
+  int width, height, baseline;
+  char *buf;
+  /*constructor */
+  CImage(char _character, int _width, int _height, int _baseline, char *_buf):character(_character),width(_width),height(_height),baseline(_baseline),buf(_buf){}
+  
+
+  /* Extract the black area feature */
+  int getBlackArea(){
+    int count=0;
+    for(int i = 0; i < width*height;i++){
+      if(buf[i]=='x')
+	count++;
+    }
+    return count;
+  }
+  
+  /* Return the top heavy feature; essentially the ratio of the black
+     area of the top 12 lines to the bottom 12 lines, multiplied by
+     100, and added to 0.5 */
+
+  double getTopHeavy(){
+    int top_area=0;
+    int bottom_area=0;
+    for(int i = 0; i < width*height; i++){
+      if(buf[i]=='x' && i <12*width){
+	top_area++;
+      }
+      else if(buf[i]=='x' && i>=12*width){
+	bottom_area++;
+      }
+    }
+    //cout<<"top "<<top_area<<" bottom "<<bottom_area<<" black "<<getBlackArea()<<endl;
+    //print();
+    return floor(((100.0*(double)top_area)/(double)bottom_area)+0.5);
+  }
+
+
+  /* Prints the character buffer */
+  void print(){
+    for(int i = 0; i < width*height;i++){
+      if(i%width==0)
+	cout<<endl;
+      cout<<buf[i];
+    }
+  }
+
+  /* Centers the character buffer, meaning that the distance from the
+     left and right edges of the character to the left and right edges
+     of the image are different by no more than a value of 1. Same for
+     the top and bottom edges of the character and image. */
+
+  void center(){
+    char *newbuf = (char *)malloc(16*16*sizeof(char));
+    memset((void *)newbuf, (int)'.', 16*16);
+    int width_offset=(16-width)/2;
+    int height_offset=(16-height)/2;
+    for(int i = 0; i < height;i++){
+      for(int j = 0; j < width;j++){
+	if(buf[i*width+j]=='x'){
+	  newbuf[((i+height_offset)*16)+j+width_offset]='x';
+	}
+
+      }
+    }
+    free(buf);
+    buf=newbuf;
+    width=16;
+    height=16;
+  }
+
+  /* The PQ moment of area feature is calculated as follows:
+     p & q are nonzero integers, and I(X,Y) is 1 if Image[x][y] exists
+     --
+     sum{x=1->width}(sum{y=1->height}(x^p*y^p*I(X,Y)))
+     --
+     Ergo, centralMoment(1,0)/centralMoment(0,0) = the x moment.
+*/
+  int getPQMomentOfArea(int p, int q){
+    int total=0;
+    for(int i = 0; i < height; ++i){
+      for(int j = 0; j < width; ++j){
+	if(buf[i*width+j]=='x'){
+	  total+=pow((double)j,(double)p)*pow((double)i,(double)q);
+	}
+      }
+    }
+    return total;
+  }
+
+  /* Wrapper for getPQMomentOfArea with p = 1, q = 0 */
+  double getXCentroid(){
+    return (double)getPQMomentOfArea(1,0)/(double)getPQMomentOfArea(0,0);
+  }
+
+  /* Wrapper for getPQMomentOfArea with p = 0, q = 1 */
+  double getYCentroid(){
+    return (double)getPQMomentOfArea(0,1)/(double)getPQMomentOfArea(0,0);
+  }
+
+
+  /* This is very similar to getPQMomentOfArea, but it takes the
+     moment about the centroid of the image, as opposed to the origin
+     of the coordinate system (in this case the upper-left hand
+     corner */
+
+  double getPQCentralMoment(int p, int q){
+    double total=0;
+    double Xc=getXCentroid(), Yc=getYCentroid();
+    for(int i = 0; i < height; ++i){
+      for(int j = 0; j < width; ++j){
+	if(buf[i*width+j]=='x'){
+	  total+=pow(((double)j-Xc),(double)p)*pow(((double)i-Yc),(double)q);
+	}
+      }
+    }
+    return total;
+  }
+
+};
+
+#endif
+#ifndef __CLASSIFIER
+#define __CLASSIFIER
+
+#include <vector>
+#include <iostream>
+#include <iomanip>
+#include <stdlib.h>
+#include "ClassPool.hpp"
+
+using namespace std;
+
+/* The classifir class is meant to be subclassed by actual
+   implementations of classifiers.*/
+
+class Classifier{
+public:
+  /* The training data */
+  ClassPool cp_train;
+  /* Vector of testing pools */
+  vector<ClassPool> cp_test;
+
+  /* This vector stores the features that are extracted from each
+     element in each class in the training pool. It assumes that all
+     features can be represented as vectors of doubles.The features
+     are organized as follows: 
+     class -> instance -> feature vector */
+  vector<vector<vector<double> > > feature_pool;
+
+  /* Vector of output confusion tables */
+  vector<vector<vector<int> > > confusion_tables;
+
+  Classifier(ClassPool _cp_train){
+    cp_train=_cp_train;
+  }
+
+  Classifier(ClassPool _cp_train, vector<ClassPool> _cp_test){
+    cp_train=_cp_train;
+    cp_test=_cp_test;
+  }
+
+  void runClassifierOnTestPools(){    
+    int count=0;
+    for(vector<ClassPool>::iterator i=cp_test.begin(); i!=cp_test.end();i++){
+      vector<vector<int> > ct=getEmptyConfusionTable();
+      int actual_class=0;
+      for(vector<string>::iterator j = i->ids.begin(); j !=i->ids.end(); j++){
+	for(vector<CImage *>::iterator k = (*i).m[*j].begin(); k != (*i).m[*j].end(); k++){
+	  int output_class=classify(extractFeatures(*k));
+	  //cout<<"("<<output_class<<", "<<*j<<") "<<flush;
+	  int classified_as=output_class;
+	  ct[actual_class][classified_as]+=1;	  
+	}
+	actual_class++;
+      }
+      confusion_tables.push_back(ct);
+    }
+  }
+
+  virtual int classify(vector<double> features){
+    return rand()%cp_train.ids.size();
+  }
+
+  /* Populate the feature vector in order of ClassPool ids. Ergo if
+     the id string is "asdf", then the feature vector will contain
+     vectors of vectors of features in 'a', 's', 'd', 'f' order  */
+  void makeFeatureVector(){    
+    for(int i = 0; i < cp_train.ids.size(); i++){
+      vector<vector<double> > classtmp;      
+      int num_images=cp_train.m[cp_train.ids[i]].size();
+      for(int j = 0; j < num_images; j++){
+	classtmp.push_back(extractFeatures(cp_train.m[cp_train.ids[i]][j]));
+      }
+      feature_pool.push_back(classtmp);
+    }
+  }
+
+  /* This function extracts the features from the CImages. It should
+     be overridden in subclasses to change which features are
+     selected. */
+
+  virtual vector<double>  extractFeatures(CImage *c){
+    vector<double> tmp(10, 1.0);
+    return tmp;
+  }
+
+  /* Add another vector of test instances */
+  void addTestClassPool(ClassPool tcp){
+    cp_test.push_back(tcp);
+  }
+
+  /* Get empty confusion table */
+  vector<vector<int> > getEmptyConfusionTable(){
+    vector<vector<int> > ret;
+    for(int i = 0; i < cp_train.ids.size(); i++){
+      vector<int> tmp;
+      for(int j = 0; j < cp_train.ids.size(); j++)
+        tmp.push_back(0);
+      ret.push_back(tmp);
+    }
+    return ret;
+  }
+
+  /* Lazy print confusion table */
+  void printCTBasic(vector<vector<int> > &ca){
+    for(int i = 0; i < cp_train.ids.size();i++){
+      for(int j =0; j < cp_train.ids.size(); j++){
+        cout<<setw(2)<<ca[i][j]<<" ";
+      }
+      cout<<endl;
+    }
+  }
+
+  /* Prettyprint the confusion table. Finicky. */
+  void printConfusionTable(vector<vector<int> > &ca){
+    if(ca.size()!=ca[0].size()){
+      cout<<"confusion array not square"<<endl;
+    }
+    vector<int> et1,et2;
+    for(int i = 0; i < ca.size();++i){
+      et1.push_back(0);
+      et2.push_back(0);
+    }
+    for(int i = 0; i < ca.size();++i){
+      for(int j = 0; j < ca.size();++j){
+        if(i!=j){
+          et1[i]+=ca[i][j];
+          et2[j]+=ca[i][j];
+        }
+      }
+    }
+    cout<<setw(11)<<0;
+    for(int i = 1; i < cp_train.ids.size();i++)
+      cout<<setw(10)<<i;
+    cout<<setw(10)<<"type 1";
+    cout<<endl;
+    int diag=0;
+    for(int i = 0; i < cp_train.ids.size(); i++){
+      cout<<i;
+      for(int j = 0; j < cp_train.ids.size();j++){
+        cout<<setw(10)<<ca[i][j];
+	if(i==j)
+	  diag+=ca[i][j];
+      }
+      cout<<setw(10)<<et1[i]<<endl;
+    }
+    cout<<"type 2"<<setw(5)<<et2[0];
+    int sum=0;
+    for(int i = 1; i < cp_train.ids.size(); i++){
+      cout<<setw(10)<<et2[i];
+      sum+=et2[i];
+    }
+    cout<<setw(10)<<sum<<" "<<(double)sum/(double(sum+diag))<<endl;  
+  }
+
+
+};
+
+#endif
+#ifndef __CPOOL
+#define __CPOOL
+
+#include <iostream>
+#include <map>
+#include <vector>
+#include <string>
+#include <stdlib.h>
+
+#include "CReader.hpp" //contains CReader and CImage
+
+using namespace std;
+
+/* The ClassPool class contains instances from every class. To add a
+   class to the classpool, specify its filename and class ID string,
+   and it will be read into the ID->CLASS map. */
+
+class ClassPool{
+public:
+  vector<string> ids;
+
+  /* map id to integer index. For convenience */
+  map<string, int> idToIndex;
+
+  map<string, vector<CImage *> > m;
+
+  /* No need to initialize anything */
+  ClassPool(){};
+
+  /* adds class vector to pool from filename*/
+  void addClass(string filename, string id, char character){
+    CReader reader(filename, character);
+    vector<CImage *> temp;
+    reader.read(temp);
+    /* Check that id isn't already in pool */
+    for(int i = 0; i < ids.size();i++){
+      if(ids[i]==id){
+	cout<<"Tried to add id that was already in pool"<<endl;
+	exit(0);
+      }
+    }
+    idToIndex[id]=ids.size();
+    ids.push_back(id);
+    m[id]=temp;
+  }
+
+  void centerAll(){
+    for(map<string, vector<CImage *> >::iterator i = m.begin(); i!=m.end();i++){
+      for(vector<CImage *>::iterator j = i->second.begin(); j != i->second.end(); j++){
+	(*j)->center();
+      }
+    }
+  }
+
+  /* Prints each ID in the ids vector */
+  void printIds(){
+    for(int i = 0; i < ids.size(); i++){
+      cout<<"\'"<<ids[i]<<"\" ";
+    }
+    cout<<endl;
+  }
+  
+
+};
+
+#endif
+#ifndef __CREADER
+#define __CREADER
+
+using namespace std;
+
+#include <string>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include "CImage.hpp"
+
+/* Pass this class the name of a file that contains a bunch of
+   character images and it will automatically read them into a vector
+   of pointers toCImage datastructures. */
+
+class CReader {
+public:
+  string filename;
+  char character;
+  CReader(string _filename, char _character):filename(_filename),character(_character){    
+  }
+
+  /* This function takes in a reference to a vector of pointers to
+     CImages and fills it with the characters that were presents in
+     the constructor-specified file */
+
+  void read(vector<CImage *> &cimages){
+    ifstream myfile(filename.c_str());
+    if(!myfile.is_open()){
+      cout<<"Error opening "<<myfile<<" for reading."<<endl;
+      exit(EXIT_FAILURE);
+    }
+    while((char)myfile.peek()=='C'){
+      string code, h, w, b;
+      int count=0;
+      int width,height,baseline;
+      
+      std::getline(myfile, code, ' ');
+      std::getline(myfile, h, ' ');
+      std::getline(myfile, w, ' ');
+      std::getline(myfile, b, '\n');
+      //cout<<code<<" "<<h<<" "<<w<<" "<<b<<endl;
+      height = atoi(h.c_str()+1);
+      width= atoi(w.c_str()+1);
+      baseline = atoi(b.c_str()+1);
+      char *buf=(char *)malloc(width*height*sizeof(char));
+      while(myfile.peek()!='C'&&myfile.peek()!=EOF){
+	if(myfile.peek()=='\n')
+	  myfile.ignore(1);
+	else{
+	  //cout<<(char)myfile.peek()<<endl;
+	  myfile.read(buf+count++, 1);
+	}      
+      }
+      cimages.push_back(new CImage(character, width,height,baseline,buf));
+      }
+  }
+  
+  CReader & operator=(const CReader &in){
+    this->filename=in.filename;
+    this->character=in.character;
+  }
+
+  void setFields(string fn, char c){
+    this->filename=fn;
+    this->character=c;
+  }
+
+};
+
+#endif
+#ifndef __MOMENT_CLASSIFIER
+#define __MOMENT_CLASSIFIER
+
+#include <utility>
+#include <vector>
+#include <math.h>
+#include "Classifier.hpp"
+
+using namespace std;
+
+class MomentClassifier:public Classifier{
+public:  
+  /* The moments to be calculated */
+  vector<pair<int, int> > moments;
+  vector<vector<double> > class_averages;
+  vector<double> rms_averages;
+  MomentClassifier(ClassPool _cp_train, vector<pair<int,int> > _moments)
+    : Classifier(_cp_train)
+  {
+    moments=_moments;
+  }
+
+  MomentClassifier(ClassPool _cp_train, vector<ClassPool> _cp_test, vector<pair<int,int> > _moments)
+    : Classifier(_cp_train, _cp_test)
+  {
+    moments=_moments;
+  }
+
+  
+  /* Automatically add the first n pq moments to the list of moments
+     to be calculated */
+  
+  MomentClassifier(ClassPool _cp_train, int n)
+    : Classifier(_cp_train)
+  {
+    addFirstNMoments(n);
+  }
+
+  MomentClassifier(ClassPool _cp_train, vector<ClassPool> _cp_test, int n)
+    : Classifier(_cp_train, _cp_test)
+  {
+    addFirstNMoments(n);
+  }
+
+
+  /* This functions adds the first N moment features to the moments
+     vector */
+  void addFirstNMoments(int n){
+    int highestPower=1;
+    int p=1,q=1;
+    int count=0;
+    while(count<n){
+      moments.push_back(pair<int,int>(q,p));
+      if(p==highestPower){
+	highestPower++;
+	p=1; q=highestPower;
+      }
+      else{
+	p++; q--;
+      }
+      count++;
+    }
+  }
+
+  /* Calculate and return the moment features */
+  virtual vector<double> extractFeatures(CImage *c){
+    vector<double> features;
+    for(int i = 0; i < moments.size();i++){
+      features.push_back(c->getPQCentralMoment(moments[i].first, moments[i].second));
+    }
+    return features;
+  }
+
+  /* Classify an unknown feature vector to a class */
+  virtual int classify(vector<double> features){
+    if(class_averages.size()==0){
+      cout<<"Need to calculate class averages"<<endl;
+      exit(0);
+    }
+    for(int i = 0; i < rms_averages.size();i++){
+      features[i]/=rms_averages[i];
+    }
+    int min_i=0;
+    double min_d=getEuclidianDistance(features, class_averages[0]);
+    for(int i = 0; i < class_averages.size();i++){
+      double tmp=getEuclidianDistance(features, class_averages[i]);
+      if(tmp<min_d){
+	min_i=i;
+	min_d=tmp;
+      }
+    }
+    return min_i;
+  }
+
+  /* applies an RMS transform. assumes the feature vector has already
+     been filled. */
+  void applyRMSTransform(){
+
+    /* Need a count variable since there might not be the same number
+       of instances in each class */
+    int count=0;
+    vector<double> averages(feature_pool[0][0].size(), 0.0);
+    for(int i = 0; i < feature_pool.size();i++){
+      for(int j = 0; j < feature_pool[i].size();j++){
+	for(int k = 0; k < feature_pool[i][j].size();k++){
+	  averages[k]+=pow(feature_pool[i][j][k], 2);
+	}
+	count++;
+      }
+    }
+    for(int i = 0; i < averages.size();i++){
+      averages[i]/=(double)count;
+      averages[i]=sqrt(averages[i]);
+    }
+   
+    for(int i = 0; i < feature_pool.size();i++){
+      for(int j = 0; j < feature_pool[i].size();j++){
+	for(int k = 0; k < feature_pool[i][j].size();k++){
+	  feature_pool[i][j][k]/=averages[k];
+	}
+      }
+    }
+    rms_averages=averages;
+  }
+
+  /* Calculates the class averages for each class. It is assumed that
+     this is being called after getting the feature values and
+     applying RMS transformation. */
+  void calculateClassAverages(){
+    for(int i =0; i < feature_pool.size();i++){
+      int count=0;
+      vector<double> averages(feature_pool[0][0].size(), 0.0);
+      for(int j =0; j < feature_pool[i].size();j++){
+	for(int k =0; k < feature_pool[0][0].size();k++){
+	  averages[k]+=feature_pool[i][j][k];
+	}
+	count++;
+      }
+      for(int k = 0; k < averages.size();k++){
+	averages[k]/=(double)count;
+      }
+      class_averages.push_back(averages);
+    }
+  }
+
+  double getEuclidianDistance(vector<double> v1, vector<double> v2){
+    double d=0;
+    for(int i =0;i<v1.size();i++){
+      d+=pow(v1[i]-v2[i], 2);
+    }
+    return sqrt(d);
+  }
+
+};
+
+#endif
+#ifndef __MOMENT_CLASSIFIERID
+#define __MOMENT_CLASSIFIERID
+
+#include <utility>
+#include <vector>
+#include <math.h>
+#include <armadillo>
+#include "Classifier.hpp"
+
+using namespace std;
+using namespace arma;
+
+class MomentClassifierId:public Classifier{
+public:  
+  /* The moments to be calculated */
+  vector<pair<int, int> > moments;
+  vector<vector<double> > class_averages;
+  vector<double> rms_averages;
+  
+  /* averaged covariance matrix */
+  mat covmat;
+  MomentClassifierId(ClassPool _cp_train, vector<pair<int,int> > _moments)
+    : Classifier(_cp_train)
+  {
+    moments=_moments;
+  }
+
+  MomentClassifierId(ClassPool _cp_train, vector<ClassPool> _cp_test, vector<pair<int,int> > _moments)
+    : Classifier(_cp_train, _cp_test)
+  {
+    moments=_moments;
+  }
+
+  
+  /* Automatically add the first n pq moments to the list of moments
+     to be calculated */
+  
+  MomentClassifierId(ClassPool _cp_train, int n)
+    : Classifier(_cp_train)
+  {
+    addFirstNMoments(n);
+  }
+
+  MomentClassifierId(ClassPool _cp_train, vector<ClassPool> _cp_test, int n)
+    : Classifier(_cp_train, _cp_test)
+  {
+    addFirstNMoments(n);
+  }
+
+
+  /* This functions adds the first N moment features to the moments
+     vector */
+  void addFirstNMoments(int n){
+    int highestPower=1;
+    int p=1,q=1;
+    int count=0;
+    while(count<n){
+      moments.push_back(pair<int,int>(q,p));
+      if(p==highestPower){
+	highestPower++;
+	p=1; q=highestPower;
+      }
+      else{
+	p++; q--;
+      }
+      count++;
+    }
+  }
+
+  /* Calculate and return the moment features */
+  vector<double> extractFeatures(CImage *c){
+    vector<double> features;
+    for(int i = 0; i < moments.size();i++){
+      features.push_back(c->getPQCentralMoment(moments[i].first, moments[i].second));
+    }
+    return features;
+  }
+
+  /* Classify an unknown feature vector to a class */
+  int classify(vector<double> features){
+    if(class_averages.size()==0){
+      cout<<"Need to calculate class averages"<<endl;
+      exit(0);
+    }
+    /* Need to apply rms to each incoming vector */
+    for(int i = 0; i < rms_averages.size();i++){
+      if(rms_averages[i]!=0)
+	features[i]/=rms_averages[i];
+    }
+    int max_i=0;
+    double max_d=getMahalanobisDistance(features, class_averages[0]);
+    for(int i = 0; i < class_averages.size();i++){
+      double tmp=getMahalanobisDistance(features, class_averages[i]);
+      if(tmp>max_d){
+	max_i=i;
+	max_d=tmp;
+      }
+    }
+    return max_i;
+  }
+
+  double getMahalanobisDistance(vector<double> _x, vector<double> _mean){
+    colvec x = conv_to<colvec>::from(_x);
+    colvec mean = conv_to<colvec>::from(_mean);
+    colvec tmp = ((inv(covmat)*mean).t())*x+(-0.5*((mean.t())*inv(covmat)*mean))[0];
+
+    return tmp[0];
+  }
+
+  void calculateCovMat(){
+    covmat=randu<mat>(feature_pool[0][0].size(),feature_pool[0][0].size());
+    covmat.zeros();
+    int count=0;
+    for(int i = 0; i < feature_pool.size(); i++){
+      for(int j = 0; j < feature_pool[i].size(); ++j){
+	colvec v = conv_to<colvec>::from(feature_pool[i][j]);
+        covmat+=v*v.t();
+	count+=1;
+      }
+    }
+    covmat/=count;
+  }
+
+  /* applies an RMS transform. assumes the feature vector has already
+     been filled. */
+  void applyRMSTransform(){
+
+    /* Need a count variable since there might not be the same number
+       of instances in each class */
+    int count=0;
+    vector<double> averages(feature_pool[0][0].size(), 0.0);
+    for(int i = 0; i < feature_pool.size();i++){
+      for(int j = 0; j < feature_pool[i].size();j++){
+	for(int k = 0; k < feature_pool[i][j].size();k++){
+	  averages[k]+=pow(feature_pool[i][j][k], 2);
+	}
+	count++;
+      }
+    }
+    for(int i = 0; i < averages.size();i++){
+      averages[i]/=(double)count;
+      averages[i]=sqrt(averages[i]);
+    }
+   
+    for(int i = 0; i < feature_pool.size();i++){
+      for(int j = 0; j < feature_pool[i].size();j++){
+	for(int k = 0; k < feature_pool[i][j].size();k++){
+	  if(averages[k]!=0)
+	    feature_pool[i][j][k]/=averages[k];
+	}
+      }
+    }
+    rms_averages=averages;
+  }
+
+  /* Calculates the class averages for each class. It is assumed that
+     this is being called after getting the feature values and
+     applying RMS transformation. */
+  void calculateClassAverages(){
+    for(int i =0; i < feature_pool.size();i++){
+      int count=0;
+      vector<double> averages(feature_pool[0][0].size(), 0.0);
+      for(int j =0; j < feature_pool[i].size();j++){
+	for(int k =0; k < feature_pool[0][0].size();k++){
+	  averages[k]+=feature_pool[i][j][k];
+	}
+	count++;
+      }
+      for(int k = 0; k < averages.size();k++){
+	averages[k]/=(double)count;
+      }
+      class_averages.push_back(averages);
+    }
+  }
+
+  double getEuclidianDistance(vector<double> v1, vector<double> v2){
+    double d=0;
+    for(int i =0;i<v1.size();i++){
+      d+=pow(v1[i]-v2[i], 2);
+    }
+    return sqrt(d);
+  }
+
+};
+
+#endif
+#ifndef __MOMENT_CLASSIFIERZONING
+#define __MOMENT_CLASSIFIERZONING
+
+#include <utility>
+#include <vector>
+#include <math.h>
+#include "Classifier.hpp"
+
+using namespace std;
+
+class MomentClassifierZoning:public Classifier{
+public:  
+  /* The moments to be calculated */
+  vector<pair<int, int> > moments;
+  vector<vector<double> > class_averages;
+  vector<double> rms_averages;
+  MomentClassifierZoning(ClassPool _cp_train, vector<pair<int,int> > _moments)
+    : Classifier(_cp_train)
+  {
+    moments=_moments;
+  }
+
+  MomentClassifierZoning(ClassPool _cp_train, vector<ClassPool> _cp_test, vector<pair<int,int> > _moments)
+    : Classifier(_cp_train, _cp_test)
+  {
+    moments=_moments;
+  }
+
+  
+  /* Automatically add the first n pq moments to the list of moments
+     to be calculated */
+  
+  MomentClassifierZoning(ClassPool _cp_train, int n)
+    : Classifier(_cp_train)
+  {
+    addFirstNMoments(n);
+  }
+
+  MomentClassifierZoning(ClassPool _cp_train, vector<ClassPool> _cp_test, int n)
+    : Classifier(_cp_train, _cp_test)
+  {
+    addFirstNMoments(n);
+  }
+
+
+  /* This functions adds the first N moment features to the moments
+     vector */
+  void addFirstNMoments(int n){
+    int highestPower=1;
+    int p=1,q=1;
+    int count=0;
+    while(count<n){
+      moments.push_back(pair<int,int>(q,p));
+      if(p==highestPower){
+	highestPower++;
+	p=1; q=highestPower;
+      }
+      else{
+	p++; q--;
+      }
+      count++;
+    }
+  }
+
+  /* Calculate and return the moment features */
+  virtual vector<double> extractFeatures(CImage *c){
+    vector<double> features;
+    for(int i = 0; i < moments.size();i++){
+      features.push_back(c->getPQCentralMoment(moments[i].first, moments[i].second));
+    }
+    /* Size of zone edge */
+    int zone_edge=2;
+    for(int p=0;p<c->height;p+=zone_edge){
+      for(int q=0;q<c->width;q+=zone_edge){
+	/* Get zone value */
+	double val=0;
+	for(int i = 0; i < zone_edge; i++){
+	  for(int j = 0; j < zone_edge; j++){
+	    if(c->buf[c->width*(p+i)+(q+j)]=='x'){
+	      val+=1.0;
+	    }
+	  }
+	}
+	features.push_back(val);
+      }
+    }    
+    //for(int i = 0; i<1;i++){
+    //features.push_back(double(i));
+    //}
+    
+    // Histogram features 
+    // Row values first
+    /*for(int p=0;p<c->height;p+=1){
+      double xval=0;
+      for(int q = 0; q<c->width; q++){
+	if(c->buf[c->width*(p)+q]=='x'){
+	  xval+=1;
+	}
+      }
+      features.push_back(xval);
+    }
+
+    //Col values second
+    for(int p=0;p<c->width;p+=1){
+      double yval=0;
+      for(int q = 0; q<c->height; q++){
+	if(c->buf[c->width*(q)+p]=='x'){
+	  yval+=1;
+	}
+      }
+      features.push_back(yval);
+    }*/
+
+    // for(int i = 0; i < features.size();i++)
+    //   cout<<features[i]<<" ";
+    // cout<<endl;
+    return features;
+  }
+
+  /* Classify an unknown feature vector to a class */
+  virtual int classify(vector<double> features){
+    
+    if(class_averages.size()==0){
+      cout<<"Need to calculate class averages"<<endl;
+      exit(0);
+    }
+    for(int i = 0; i < rms_averages.size();i++){
+      if(rms_averages[i]!=0)
+	features[i]/=rms_averages[i];
+    }
+    //for(int i = 0; i < features.size();i++)
+    //cout<<features[i]<<" ";
+    //cout<<endl;
+    // for(int i = 0; i < class_averages.size();i++){
+    //   for(int j = 0; j < class_averages[i].size();j++){
+    // 	cout<<class_averages[i][j]<<" ";
+    //   }
+    //   cout<<endl;
+    // }
+    //exit(0);
+    int min_i=0;
+    double min_d=getEuclidianDistance(features, class_averages[0]);
+    for(int i = 0; i < class_averages.size();i++){
+      double tmp=getEuclidianDistance(features, class_averages[i]);
+      //cout<<features.size()<<" "<<class_averages[i].size()<<" "<<tmp<<endl;
+      if(tmp<min_d){
+	min_i=i;
+	min_d=tmp;
+      }
+    }
+    return min_i;
+  }
+
+  /* applies an RMS transform. assumes the feature vector has already
+     been filled. */
+  void applyRMSTransform(){
+
+    /* Need a count variable since there might not be the same number
+       of instances in each class */
+    int count=0;
+    vector<double> averages(feature_pool[0][0].size(), 0.0);
+    for(int i = 0; i < feature_pool.size();i++){
+      for(int j = 0; j < feature_pool[i].size();j++){
+	for(int k = 0; k < feature_pool[i][j].size();k++){
+	  averages[k]+=pow(feature_pool[i][j][k], 2);
+	}
+	count++;
+      }
+    }
+    for(int i = 0; i < averages.size();i++){
+      averages[i]/=(double)count;
+      averages[i]=sqrt(averages[i]);
+    }
+    for(int i = 0; i < feature_pool.size();i++){
+      for(int j = 0; j < feature_pool[i].size();j++){
+	for(int k = 0; k < feature_pool[i][j].size();k++){
+	  if(averages[k]!=0)
+	    feature_pool[i][j][k]/=averages[k];
+	  //cout<<feature_pool[i][j][k]<<endl;
+	}
+      }
+    }
+    
+    rms_averages=averages;
+  }
+
+  /* Calculates the class averages for each class. It is assumed that
+     this is being called after getting the feature values and
+     applying RMS transformation. */
+  void calculateClassAverages(){
+    for(int i =0; i < feature_pool.size();i++){
+      int count=0;
+      vector<double> averages(feature_pool[0][0].size(), 0.0);
+      for(int j =0; j < feature_pool[i].size();j++){
+	for(int k =0; k < feature_pool[0][0].size();k++){
+	  averages[k]+=feature_pool[i][j][k];
+	}
+	count++;
+      }
+      for(int k = 0; k < averages.size();k++){
+	averages[k]/=(double)count;
+	//cout<<averages[k]<<"/"<<(double)count<<" = "<<averages[k]/(double)count<<endl;
+
+      }
+      class_averages.push_back(averages);
+    }
+
+
+    
+  }
+
+  double getEuclidianDistance(vector<double> v1, vector<double> v2){
+    double d=0;
+    for(int i =0;i<v1.size();i++){
+      //cout<<pow(v1[i]-v2[i], 2)<<endl;
+      d+=pow(v1[i]-v2[i], 2);
+    }
+    //cout<<d<<endl;
+    return sqrt(d);
+  }
+
+};
+
+#endif
+#ifndef __NN
+#define __NN
+
+#include "Classifier.hpp"
+#include "MomentClassifier.hpp"
+
+using namespace std;
+
+/* Subclasses the Moment classifier to provide K-NN functionality in
+   moment-space */
+
+class NNClassifier:public MomentClassifier{
+public:
+  int k;
+  vector<pair<int, int> > moments;
+
+  NNClassifier(ClassPool _cp_train,vector<pair<int,int> > _moments, int _k)
+    :MomentClassifier(_cp_train, _moments)
+  {
+    k=_k;
+  }
+
+  NNClassifier(ClassPool _cp_train, vector<ClassPool> _cp_test,vector<pair<int,int> > _moments, int _k)
+    :MomentClassifier(_cp_train, _cp_test, _moments)
+  {
+    k=_k;
+  }
+
+  NNClassifier(ClassPool _cp_train,int n, int _k)
+    :MomentClassifier(_cp_train, n)
+  {
+    k=_k;
+  }
+
+  NNClassifier(ClassPool _cp_train, vector<ClassPool> _cp_test, int n, int _k)
+    :MomentClassifier(_cp_train, _cp_test, n)
+  {
+    k=_k;
+  }
+  
+  int classify(vector<double> features){
+
+    for(int i = 0; i < rms_averages.size();i++){
+      features[i]/=rms_averages[i];
+    }
+
+    vector<pair<int, double> > mins;
+    mins.push_back(pair<int, double>(0, getEuclidianDistance(features, feature_pool[0][0])));
+    int maxIndex=0;
+    for(int i = 0; i < feature_pool.size();i++){
+      for(int j = 0; j < feature_pool[i].size();j++){
+	pair<int, double> tmp(i, getEuclidianDistance(features, feature_pool[i][j]));
+	if(mins.size()<k)
+	  mins.push_back(tmp);
+	else{
+	  if(mins[maxIndex].second>tmp.second){
+	    mins[maxIndex]=tmp;
+	    /*Find new max */
+	    double maxd=mins[0].second;
+	    double maxi=0;
+	    for(int i = 0; i < mins.size();i++){
+	      if(mins[i].second>maxd){
+		maxi=i;
+		maxd=mins[i].second;
+	      }
+	    }
+	    maxIndex=maxi;
+	  }
+	  
+	}
+      }
+    }
+    map<int,int> freq;
+    for(int i =0; i < mins.size(); i++){
+      if(freq.find(mins[i].first)==freq.end()){
+	freq[mins[i].first]=1;
+      }
+      else
+	freq[mins[i].first]++;
+    }
+    
+    map<int,int>::iterator greatest=freq.begin();
+    int max=greatest->second;
+    for(map<int,int>::iterator i=freq.begin();i!=freq.end(); i++){
+      if(i->second>max){
+	greatest=i;
+	max=i->second;
+      }
+    }
+    return greatest->first;
+  }
+
+};
+
+#endif
+#ifndef __NNZONING
+#define __NNZONING
+
+#include "Classifier.hpp"
+#include "MomentClassifierZoning.hpp"
+
+using namespace std;
+
+/* Subclasses the Moment classifier to provide K-NN functionality in
+   moment-space */
+
+class NNClassifierZoning:public MomentClassifierZoning{
+public:
+  int k;
+  vector<pair<int, int> > moments;
+
+  NNClassifierZoning(ClassPool _cp_train,vector<pair<int,int> > _moments, int _k)
+    :MomentClassifierZoning(_cp_train, _moments)
+  {
+    k=_k;
+  }
+
+  NNClassifierZoning(ClassPool _cp_train, vector<ClassPool> _cp_test,vector<pair<int,int> > _moments, int _k)
+    :MomentClassifierZoning(_cp_train, _cp_test, _moments)
+  {
+    k=_k;
+  }
+
+  NNClassifierZoning(ClassPool _cp_train,int n, int _k)
+    :MomentClassifierZoning(_cp_train, n)
+  {
+    k=_k;
+  }
+
+  NNClassifierZoning(ClassPool _cp_train, vector<ClassPool> _cp_test, int n, int _k)
+    :MomentClassifierZoning(_cp_train, _cp_test, n)
+  {
+    k=_k;
+  }
+  
+  int classify(vector<double> features){
+
+    for(int i = 0; i < rms_averages.size();i++){
+      features[i]/=rms_averages[i];
+    }
+
+    vector<pair<int, double> > mins;
+    mins.push_back(pair<int, double>(0, getEuclidianDistance(features, feature_pool[0][0])));
+    int maxIndex=0;
+    for(int i = 0; i < feature_pool.size();i++){
+      for(int j = 0; j < feature_pool[i].size();j++){
+	pair<int, double> tmp(i, getEuclidianDistance(features, feature_pool[i][j]));
+	if(mins.size()<k)
+	  mins.push_back(tmp);
+	else{
+	  if(mins[maxIndex].second>tmp.second){
+	    mins[maxIndex]=tmp;
+	    /*Find new max */
+	    double maxd=mins[0].second;
+	    double maxi=0;
+	    for(int i = 0; i < mins.size();i++){
+	      if(mins[i].second>maxd){
+		maxi=i;
+		maxd=mins[i].second;
+	      }
+	    }
+	    maxIndex=maxi;
+	  }
+	  
+	}
+      }
+    }
+    map<int,int> freq;
+    for(int i =0; i < mins.size(); i++){
+      if(freq.find(mins[i].first)==freq.end()){
+	freq[mins[i].first]=1;
+      }
+      else
+	freq[mins[i].first]++;
+    }
+    
+    map<int,int>::iterator greatest=freq.begin();
+    int max=greatest->second;
+    for(map<int,int>::iterator i=freq.begin();i!=freq.end(); i++){
+      if(i->second>max){
+	greatest=i;
+	max=i->second;
+      }
+    }
+    return greatest->first;
+  }
+
+};
+
+#endif
+#include <iostream>
+#include <string>
+#include <sstream>
+#include "ClassPool.hpp"
+#include "Classifier.hpp"
+#include "MomentClassifier.hpp"
+#include "MomentClassifierZoning.hpp"
+#include "MomentClassifierId.hpp"
+#include "NNClassifier.hpp"
+#include "NNClassifierZoning.hpp"
+
+
+using namespace std;
+
+int main(int argc, char **argv){
+  /* pool 0 is the training set, pools 1, 2, and 3 are the testing
+     sets. */
+  vector<ClassPool> pools(5, ClassPool());
+  
+  
+  /* Each character is a different class. */
+  string classes="acemnoruvx";
+  /* Each character is a different pool. */
+  string poolsID="AABCD";
+
+  /* Filepath to char files */
+  string path_prefix="C-I/";
+
+  /* Initialize the different classpools from the files */
+  for(int i = 0; i < poolsID.size(); i++){
+    for(int j = 0; j < classes.size(); j++){
+      stringstream ss;
+      ss<<path_prefix<<poolsID[i]<<"-"<<classes[j]<<".txt";
+      pools[i].addClass(ss.str(), classes.substr(j,1), classes[j]);
+    }
+    pools[i].centerAll();
+  }
+
+  /* Create classifier with train and test class pools */
+
+  MomentClassifierZoning c(pools[0], 5);
+  c.addTestClassPool(pools[1]);
+  c.addTestClassPool(pools[2]);
+  c.addTestClassPool(pools[3]);
+  c.addTestClassPool(pools[4]);
+  
+  c.makeFeatureVector();
+  c.applyRMSTransform();
+  c.calculateClassAverages();
+  //c.calculateCovMat();
+
+  c.runClassifierOnTestPools();
+  c.printConfusionTable(c.confusion_tables[0]);
+  cout<<endl;
+  c.printConfusionTable(c.confusion_tables[1]);
+  cout<<endl;
+  c.printConfusionTable(c.confusion_tables[2]);
+  cout<<endl;
+  c.printConfusionTable(c.confusion_tables[3]);
+  
+  return 0;
+}
+#include <iostream>
+#include <string>
+#include <sstream>
+#include "ClassPool.hpp"
+#include "Classifier.hpp"
+#include "MomentClassifier.hpp"
+
+using namespace std;
+
+int main(int argc, char **argv){
+
+  vector<ClassPool> pools(2, ClassPool());
+
+  /* Each character is a different class. */
+  string classes="0123456789";
+  /* Each character is a different pool. */
+  string poolsID="AB";
+
+  /* Filepath to char files */
+  string path_prefix="hw6_data/";
+  for(int i = 0; i < poolsID.size(); i++){
+    for(int j = 0; j < classes.size(); j++){
+      stringstream ss;
+      ss<<path_prefix<<poolsID[i]<<"-"<<classes[j]<<".txt";
+      pools[i].addClass(ss.str(), classes.substr(j,1), classes[j]);
+      //cout<<classes.substr(j,1);
+    }
+    pools[i].centerAll();
+  }
+
+  //for(vector<CImage *>::iterator i = pools[0].m["0"].begin(); i!=pools[0].m["0"].end();i++){
+  // (*i)->print();
+  // cout<<endl;
+  //}
+
+  MomentClassifier c(pools[0], 12);
+  c.addTestClassPool(pools[1]);
+
+  c.makeFeatureVector();                                                                    
+  c.applyRMSTransform();                                                                     
+  c.calculateClassAverages();                                                                
+  //for(int i = 0; i < c.class_averages[0].size();i++){
+  // cout<<c.class_averages[0][i]<<" "<<endl;
+  //}
+  /*for(int i = 0; i < c.feature_pool[0].size();i++){
+    for(int j = 0; j < c.feature_pool[0][i].size();j++){
+      cout<<c.feature_pool[0][i][j]<<" ";
+    }
+    cout<<endl;
+    }*/
+  
+  c.runClassifierOnTestPools();                                                              
+  c.printConfusionTable(c.confusion_tables[0]);
+
+  return 0;
+}
+all: main
+
+CImage: CImage.hpp
+	g++ -o CImage.o CImage.hpp -c
+
+CReader: CImage CReader.hpp
+	g++ -o CReader.o CReader.hpp -c
+
+ClassPool: CReader CImage ClassPool.hpp
+	g++ -o ClassPool.o ClassPool.hpp -c
+
+Classifier: ClassPool Classifier.hpp
+	g++ -o Classifier.o Classifier.hpp -c
+
+MomentClassifier: Classifier MomentClassifier.hpp
+	g++ -o MomentClassifier.o MomentClassifier.hpp -c
+
+MomentClassifierId: Classifier MomentClassifierId.hpp
+	g++ -o MomentClassifierId.o MomentClassifierId.hpp -c -larmadillo
+
+NNClassifier: Classifier NNClassifier.hpp
+	g++ -o NNClassifier.o NNClassifier.hpp -c
+
+main: 	Classifier MomentClassifier MomentClassifierId NNClassifier CReader CImage ClassPool main.cpp
+	g++ -o main main.cpp -ggdb -larmadillo
+
+clean:
+	rm -rf *.o *~ *# main
