@@ -84,7 +84,7 @@ public:
     }
     /* Need to apply rms to each incoming vector */
     for(int i = 0; i < rms_averages.size();i++){
-      if(rms_average!=0)
+      if(rms_averages[i]!=0)
 	features[i]/=rms_averages[i];
     }
     int max_i=0;

@@ -38,7 +38,7 @@ int main(int argc, char **argv){
 
   /* Create classifier with train and test class pools */
 
-  NNClassifierZoning c(pools[0], 20,5);
+  MomentClassifierZoning c(pools[0], 20);
   c.addTestClassPool(pools[1]);
   c.addTestClassPool(pools[2]);
   c.addTestClassPool(pools[3]);
