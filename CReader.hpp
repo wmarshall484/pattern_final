@@ -12,7 +12,7 @@ using namespace std;
 
 /* Pass this class the name of a file that contains a bunch of
    character images and it will automatically read them into a vector
-   of CImage datastructures. */
+   of pointers toCImage datastructures. */
 
 class CReader {
 public:
@@ -60,6 +60,11 @@ public:
   CReader & operator=(const CReader &in){
     this->filename=in.filename;
     this->character=in.character;
+  }
+
+  void setFields(string fn, char c){
+    this->filename=fn;
+    this->character=c;
   }
 
 };
