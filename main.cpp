@@ -5,6 +5,7 @@
 #include "Classifier.hpp"
 #include "MomentClassifier.hpp"
 #include "MomentClassifierId.hpp"
+#include "NNClassifier.hpp"
 
 
 using namespace std;
@@ -35,7 +36,7 @@ int main(int argc, char **argv){
 
   /* Create classifier with train and test class pools */
 
-  MomentClassifier c(pools[0], 20);
+  NNClassifier c(pools[0], 20, 5);
   c.addTestClassPool(pools[1]);
   c.addTestClassPool(pools[2]);
   c.addTestClassPool(pools[3]);
@@ -43,7 +44,7 @@ int main(int argc, char **argv){
   
   c.makeFeatureVector();
   c.applyRMSTransform();
-  c.calculateClassAverages();
+  //c.calculateClassAverages();
   //c.calculateCovMat();
 
   c.runClassifierOnTestPools();

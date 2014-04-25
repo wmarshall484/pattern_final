@@ -18,7 +18,10 @@ MomentClassifier: Classifier MomentClassifier.hpp
 MomentClassifierId: Classifier MomentClassifierId.hpp
 	g++ -o MomentClassifierId.o MomentClassifierId.hpp -c -larmadillo
 
-main: Classifier MomentClassifier MomentClassifierId CReader CImage ClassPool main.cpp
+NNClassifier: Classifier NNClassifier.hpp
+	g++ -o NNClassifier.o NNClassifier.hpp -c
+
+main: Classifier MomentClassifier MomentClassifierId NNClassifier CReader CImage ClassPool main.cpp
 	g++ -o main main.cpp -ggdb -larmadillo
 
 clean:

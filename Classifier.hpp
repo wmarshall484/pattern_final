@@ -39,15 +39,6 @@ public:
   }
 
   void runClassifierOnTestPools(){    
-    /*for(int i = 0; i < cp_test.size(); i++){
-      vector<vector<int> > ct=getEmptyConfusionTable();
-      for(int j = 0; j < cp_test[i].ids.size(); j++){
-	for(int k = 0; k < cp_test[i].m[cp_test[i].ids[j]].size();k++){
-	  string s=classify(extractFeatures(&(cp_test[i].m[cp_test[i].ids[j]][k])));
-	  }
-	}
-      }
-      }*/
     int count=0;
     for(vector<ClassPool>::iterator i=cp_test.begin(); i!=cp_test.end();i++){
       vector<vector<int> > ct=getEmptyConfusionTable();
