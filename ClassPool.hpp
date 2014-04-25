@@ -18,6 +18,10 @@ using namespace std;
 class ClassPool{
 public:
   vector<string> ids;
+
+  /* map id to integer index. For convenience */
+  map<string, int> idToIndex;
+
   map<string, vector<CImage *> > m;
 
   /* No need to initialize anything */
@@ -35,6 +39,7 @@ public:
 	exit(0);
       }
     }
+    idToIndex[id]=ids.size();
     ids.push_back(id);
     m[id]=temp;
   }
@@ -46,6 +51,7 @@ public:
     }
     cout<<endl;
   }
+  
 
 };
 

@@ -13,4 +13,4 @@ main: CReader CImage ClassPool main.cpp
 	g++ -o main main.cpp
 
 clean:
-	rm -rf *.o *~ *#
+	rm -rf *.o *~ *# main

@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include "ClassPool.hpp"
+#include "Classifier.hpp"
 
 using namespace std;
 
@@ -27,10 +28,15 @@ int main(int argc, char **argv){
     }
   }
 
-  /* Sanity check */
-  for(int i = 0; i < pools.size();i++){
-    pools[i].printIds();
-  }
-
+  /* Creat classifier with train and test class pools */
+  Classifier c(pools[0]);
+  c.addTestClassPool(pools[1]);
+  c.addTestClassPool(pools[2]);
+  c.addTestClassPool(pools[3]);
+  
+  c.makeFeatureVector();
+  c.runClassifierOnTestPools();
+  c.printConfusionTable(c.confusion_tables[1]);
+  
   return 0;
 }
