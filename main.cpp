@@ -4,6 +4,8 @@
 #include "ClassPool.hpp"
 #include "Classifier.hpp"
 #include "MomentClassifier.hpp"
+#include "MomentClassifierId.hpp"
+
 
 using namespace std;
 
@@ -39,15 +41,11 @@ int main(int argc, char **argv){
   c.addTestClassPool(pools[3]);
   c.addTestClassPool(pools[4]);
   
-  /*vector<CImage *> tmp= c.cp_train.m["x"];
-  for(int i = 0; i < tmp.size(); i++){
-    tmp[i]->print();
-    cout<<endl;
-    }*/
-  
   c.makeFeatureVector();
   c.applyRMSTransform();
   c.calculateClassAverages();
+  //c.calculateCovMat();
+
   c.runClassifierOnTestPools();
   c.printConfusionTable(c.confusion_tables[0]);
   cout<<endl;

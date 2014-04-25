@@ -15,8 +15,11 @@ Classifier: ClassPool Classifier.hpp
 MomentClassifier: Classifier MomentClassifier.hpp
 	g++ -o MomentClassifier.o MomentClassifier.hpp -c
 
-main: Classifier MomentClassifier CReader CImage ClassPool main.cpp
-	g++ -o main main.cpp -ggdb
+MomentClassifierId: Classifier MomentClassifierId.hpp
+	g++ -o MomentClassifierId.o MomentClassifierId.hpp -c -larmadillo
+
+main: Classifier MomentClassifier MomentClassifierId CReader CImage ClassPool main.cpp
+	g++ -o main main.cpp -ggdb -larmadillo
 
 clean:
 	rm -rf *.o *~ *# main
