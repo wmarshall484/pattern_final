@@ -23,7 +23,7 @@ The first 20 central moments were selected as features for the classification of
 
 Lastly, by converting the features to ARFF format and importing it into WEKA, it was possible to use the libSVM package for support vector machines, resulting in an error rate as low as 1.8%.
 
-For convenience, the confusion matrices for each different classifier across datasets A, B, C, and D has been included (immediately following this sentence), and the 1,340 lines of code have been appended at the end of this document.
+For convenience, the confusion matrices for each different classifier across datasets A, B, C, and D has been included (immediately following this sentence), and the 1,340 lines of code have been appended at the end of this document and can also be accessed at the following github link: https://github.com/wmarshall484/pattern_final.git.
 
 Classifier 1, Moment-space minimum-distance classifier, trained on dataset A:
 Dataset A:
